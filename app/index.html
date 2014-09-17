@@ -20,7 +20,7 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="container" ng-init="margins={top: 50, left: 50, right: 50, bottom: 50}">
+    <div class="container" ng-controller="MainCtrl">
       <chart width=500 height=500 title="hi" margins="margins"></chart>
     </div>
 
@@ -49,6 +49,8 @@
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/directives/chart.js"></script>
         <script src="scripts/app.js"></script>
+
+        <script src="scripts/controllers/main.js"></script>
         <!-- endbuild -->
 </body>
 </html>
