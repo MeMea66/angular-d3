@@ -1,26 +1,32 @@
 (function(){
-  'use strict';
+    'use strict';
 
-  angular.module('d3.chart')
-      .directive('chart', ['', function() {
-          return {
-              template: '<div></div>',
-              restrict: 'E',
-              scope: {
-                  chartWidth: "@width",
-                  chartHeight: "@height",
-                  title: "@"
-              },
-              controller: function($scope) {
+    angular.module('d3.chart', [])
+        .directive('chart', function() {
+            return {
+                template: '<div>' +
+                    '<svg ng-attr-width={{width}} ng-attr-height={{height}}>' +
+                        '<g ng-attr-transform="translate({{margins.top}}, {{margins.left}})">' +
+                        '</g>' +
+                    '</svg>' +
+                '</div>',
+                restrict: 'E',
+                scope: {
+                    width: "@",
+                    height: "@",
+                    title: "@",
 
-              },
-              require: 'siblingDirectiveName',
-              compile: function compile(tElement, tAttrs, transclude) {
-                return {
-                  pre: function preLink(scope, iElement, iAttrs, controller) { ... },
-                  post: function postLink(scope, iElement, iAttrs, controller) { ... }
-                }
-            }
-          };
-      });
-});
+                    margins: "="
+                },
+                controller: function($scope) {
+                    $scope.getWidth = function() {
+                        return $scope.width - margins.left - margins.right;
+                    }
+
+                    $scope.getHeight = function() {
+                        return $scope.height - margins.top - margins.bottom;
+                    }
+                },
+            };
+        });
+})();
