@@ -13,15 +13,12 @@
                 format: '&',
                 ticks: '&'
             },
-            controller: function() {
-                console.log('hi');
-            },
-            require: ['^chart'],
+            require: '^chart',
             compile: function compile(tElement, tAttrs, transclude) {
                 return {
-                    post: function postLink($scope, element, attrs, ctrls) {
-                        $scope.chart = ctrls[0];
-
+                    post: function postLink($scope, element, attrs, chart) {
+                        var xScale;
+                        $scope.chart = chart;
                         $scope.type = $scope.type || 'time';
                         //$scope.field = $scope.field || 'time';
                         //$scope.format = $scope.format || 'time';
@@ -29,16 +26,15 @@
 
                         switch($scope.type) {
                             case 'time':
-                                var xScale =  d3.time.scale();
+                                xScale =  d3.time.scale();
                                 break;
                             default:
-                                var xScale =  d3.time.scale();
+                                xScale =  d3.time.scale();
                                 break;
                         }
-
+                        console.log(chart.getData());
                         xScale.range([0, $scope.chart.getWidth()]);
-                        console.log(element);
-                        d3.select(element[0]).call(d3.svg.axis().scale(xScale).orient("bottom"));
+                        d3.select(element[0]).call(d3.svg.axis().scale(xScale).orient('bottom'));
                     }
                 };
             }
