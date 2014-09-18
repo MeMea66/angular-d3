@@ -18,4 +18,4 @@ angular
     'ngTouch',
 
     'd3.chart'
-  ])
+  ]);

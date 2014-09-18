@@ -2,22 +2,26 @@
     'use strict';
 
     angular.module('d3.chart')
-    .directive('xAxis', ['', function() {
+    .directive('axisX', function() {
         return {
-            template: '<div></div>',
+            templateUrl: 'templates/axisX.html',
             restrict: 'E',
+            replace: true,
             scope: {
-                type: "@",
-                field: "@",
-                format: "&",
-                ticks: "&"
+                type: '@',
+                field: '@',
+                format: '&',
+                ticks: '&'
             },
-            controller: function($scope) {
+            controller: function() {
+                console.log('hi');
             },
-            require: ['^chart', 'y-axis']
+            require: ['^chart'],
             compile: function compile(tElement, tAttrs, transclude) {
                 return {
-                    post: function postLink($scope, element, attrs, chart) {
+                    post: function postLink($scope, element, attrs, ctrls) {
+                        $scope.chart = ctrls[0];
+
                         $scope.type = $scope.type || 'time';
                         //$scope.field = $scope.field || 'time';
                         //$scope.format = $scope.format || 'time';
@@ -32,11 +36,12 @@
                                 break;
                         }
 
-                        xScale.range([0, chart.getWidth()]);
-                        var xAxis = d3.svg.axis().scale(xScale).orient("bottom")
+                        xScale.range([0, $scope.chart.getWidth()]);
+                        console.log(element);
+                        d3.select(element[0]).call(d3.svg.axis().scale(xScale).orient("bottom"));
                     }
-                }
+                };
             }
         };
     });
-});
+})();

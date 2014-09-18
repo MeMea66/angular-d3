@@ -4,28 +4,24 @@
     angular.module('d3.chart', [])
         .directive('chart', function() {
             return {
-                template: '<div>' +
-                    '<svg ng-attr-width={{width}} ng-attr-height={{height}}>' +
-                        '<g ng-attr-transform="translate({{margins.top}}, {{margins.left}})">' +
-                        '</g>' +
-                    '</svg>' +
-                '</div>',
+                transclude: true,
+                templateUrl: 'templates/chart.html',
                 restrict: 'E',
                 scope: {
-                    width: "@",
-                    height: "@",
-                    title: "@",
+                    width: '@',
+                    height: '@',
+                    title: '@',
 
-                    margins: "="
+                    margins: '='
                 },
                 controller: function($scope) {
-                    $scope.getWidth = function() {
-                        return $scope.width - margins.left - margins.right;
-                    }
+                    this.getWidth = function() {
+                        return $scope.width - $scope.margins.left - $scope.margins.right;
+                    };
 
-                    $scope.getHeight = function() {
-                        return $scope.height - margins.top - margins.bottom;
-                    }
+                    this.getHeight = function() {
+                        return $scope.height - $scope.margins.top - $scope.margins.bottom;
+                    };
                 },
             };
         });

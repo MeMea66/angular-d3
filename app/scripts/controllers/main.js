@@ -14,5 +14,5 @@ angular.module('angularD3App')
             left: 50,
             right: 50,
             bottom: 50
-        }
+        };
     });
