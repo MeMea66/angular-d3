@@ -4,6 +4,7 @@
     angular.module('d3.chart')
     .directive('axisY', function() {
         return {
+            templateNamespace: 'svg',
             templateUrl: 'templates/axisY.html',
             restrict: 'E',
             replace: true,

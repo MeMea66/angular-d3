@@ -4,6 +4,7 @@
     angular.module('d3.chart', [])
         .directive('chart', function() {
             return {
+                templateNamespace: 'svg',
                 transclude: true,
                 templateUrl: 'templates/chart.html',
                 restrict: 'E',
