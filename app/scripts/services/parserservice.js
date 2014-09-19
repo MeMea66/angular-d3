@@ -1,16 +1,15 @@
 'use strict';
 
-var module = angular.module('angularD3App', []);
+angular.module('angularD3App')
+    .service('parserService', ['$q', function($q) {
+        this.convertToJson = function(file_location) {
+            var defer = $q.defer();
 
-module.service('parserService', ['$q', function($q) {
-    this.convertToJson = function(file_location) {
-        var defer = $q.defer();
+            d3.csv(file_location, function(data) {
+                defer.resolve(data);
+            });
 
-        d3.csv(file_location, function(data) {
-            defer.resolve(data);
-        });
-
-        return defer.promise;
-    };
-}]);
+            return defer.promise;
+        };
+    }]);
 

@@ -19,6 +19,8 @@
                     post: function postLink($scope, element, attrs, chart) {
                         var xScale;
                         var xAxis;
+                        var axisEle = d3.select(element[0]);
+
                         $scope.chart = chart;
                         $scope.type = $scope.type || 'time';
                         //$scope.field = $scope.field || 'time';
@@ -33,23 +35,37 @@
                                 xScale =  d3.time.scale();
                                 break;
                         }
+
                         xScale.range([0, $scope.chart.getWidth()]);
-                        xAxis = d3.svg.axis().scale(xScale).orient('bottom');
-                        d3.select(element[0]).call(xAxis);
+                        xAxis = d3.svg.axis()
+                            .scale(xScale)
+                            .orient('bottom');
+                        d3.select('.x.axis').call(xAxis);
 
                         $scope.$watch(function() {
                             return chart.getData();
                         }, function(newVal, oldVal) {
-                            xScale.domain( d3.extent(
-                                _.chain(newVal)
-                                .values()
-                                .flatten(true)
-                                .pluck($scope.field)
-                                .value())
-                            );
 
-                            console.log('get');
-                            console.log(chart.getData());
+                            console.log(d3.extent(
+                                   _.chain(newVal)
+                                   .values()
+                                   .flatten(true)
+                                   .pluck($scope.field)
+                                   .map(function(val) {return '2014-08-24T' + val})
+                                   .value()));
+
+                            xScale.domain(
+                                d3.extent(
+                                   _.chain(newVal)
+                                   .values()
+                                   .tap(function(val){console.log(val)})
+                                   .flatten(true)
+                                   .pluck($scope.field)
+                                   .map(function(val) {return new Date('2014-08-24T' + val)})
+                                   .value())
+                           );
+
+                            axisEle.call(xAxis);
                         }, true);
                     }
                 };

@@ -20,12 +20,12 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="container" ng-controller="MainCtrl">
+    <div class="container" ng-controller="mainCtrl">
         <chart width=500 height=500 title="hi" margins="margins">
-            <axis-x></axis-x>
-            <axis-y></axis-y>
+            <axis-x field="Time"
+                type="time"></axis-x>
+            <axis-y data="data"></axis-y>
         </chart>
-        <div ng-repeat="d in data">{{ d }}<br></div>
     </div>
 
 

@@ -1,37 +1,10 @@
-svg {
-  font-size: 10px;
+.axis text {
+  font: 10px sans-serif;
 }
 
-rect {
-  fill: #eeeeee;
-}
-
-path.area {
-  fill: #000;
-  fill-opacity: .75;
-}
-
-.axis line, .grid line {
-  stroke-width: .5px;
-  shape-rendering: crispEdges;
-}
-
-.grid line {
-  stroke: #fff;
-}
-
-.grid line.minor {
-  stroke-opacity: .5;
-}
-
-.grid text {
-  display: none;
-}
-
-.axis line {
+.axis line,
+.axis path {
+  fill: none;
   stroke: #000;
-}
-
-.grid path, .axis path {
-  display: none;
+  shape-rendering: crispEdges;
 }

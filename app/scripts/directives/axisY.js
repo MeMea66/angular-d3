@@ -11,24 +11,13 @@
                 side: '@',
                 format: '&',
                 ticks: '&',
-                //data: '='
+                data: '='
             },
             require: '^chart',
             compile: function compile(tElement, tAttrs, transclude) {
                 return {
                     post: function postLink($scope, element, attrs, chart) {
-                        $scope.data = [1,2,3,4];
-
-                        $scope.$watch('data', function(newVal, oldVal) {
-                            console.log('set');
-                            chart.setData($scope.side, newVal);
-                        }, true);
-
-                        setTimeout(function() {
-                            $scope.$apply( function() {
-                                $scope.data = [5,6,7,8];
-                            })
-                        })
+                        chart.setData($scope.side, $scope.data);
                     }
                 };
             }
