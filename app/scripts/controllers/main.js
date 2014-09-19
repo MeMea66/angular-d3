@@ -15,12 +15,9 @@ angular.module('angularD3App')
             right: 50,
             bottom: 50
         };
-        parserService.convertToJson('csv/earthquake.csv');
 
-        $scope.$on('csvConverted', function(event, args) {
-            $scope.$apply(function() {
-                $scope.data = args;
-            });
-            console.log($scope.data[0]);
+        parserService.convertToJson('csv/earthquake.csv').then(function(result) {
+            $scope.data = result;
+            console.log($scope.data);
         });
     }]);
