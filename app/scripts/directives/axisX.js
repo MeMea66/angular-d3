@@ -2,59 +2,64 @@
     'use strict';
 
     angular.module('d3.chart')
-    .directive('axisX', function() {
+    .directive('axisX', ['d3AxisService', function(d3AxisService) {
         return {
             templateNamespace: 'svg',
             templateUrl: 'templates/axisX.html',
             restrict: 'E',
             replace: true,
             scope: {
+                label: '@',
                 type: '@',
                 field: '@',
-                format: '&',
+                format: '@',
+                innerTick: '@',
+                outerTick: '@',
+                side: '@',
                 ticks: '&'
             },
             require: '^chart',
             compile: function compile(tElement, tAttrs, transclude) {
                 return {
                     post: function postLink($scope, element, attrs, chart) {
+                        console.log(attrs);
                         var xScale;
                         var xAxis;
                         var axisEle = d3.select(element[0]);
 
                         $scope.chart = chart;
                         $scope.type = $scope.type || 'time';
-                        //$scope.field = $scope.field || 'time';
-                        //$scope.format = $scope.format || 'time';
-                        //$scope.ticks = $scope.ticks || 'time';
+                        attrs.side = attrs.side || 'bottom';
 
                         switch($scope.type) {
                             case 'time':
                                 xScale =  d3.time.scale();
+                                attrs.format = attrs.format || d3.time.format('%c');
                                 break;
                             default:
                                 xScale =  d3.time.scale();
+                                attrs.format = attrs.format || d3.time.format('%c');
                                 break;
                         }
 
+                        var axisSettings = _.compose.apply(null, _.chain(attrs)
+                            .reduce(function(result, value, key) {
+                                var mutation = d3AxisService.d3AxisOptions(key, value);
+                                if(!_.isUndefined(mutation)) {
+                                    result.push(mutation);
+                                }
+
+                                return result;
+                            }, [])
+                            .value());
+
                         xScale.range([0, $scope.chart.getWidth()]);
-                        xAxis = d3.svg.axis()
-                            .scale(xScale)
-                            .orient('bottom');
+                        xAxis = axisSettings(d3.svg.axis().scale(xScale));
                         d3.select('.x.axis').call(xAxis);
 
                         $scope.$watch(function() {
                             return chart.getData();
                         }, function(newVal, oldVal) {
-
-                            console.log(d3.extent(
-                                   _.chain(newVal)
-                                   .values()
-                                   .flatten(true)
-                                   .pluck($scope.field)
-                                   .map(function(val) {return '2014-08-24T' + val})
-                                   .value()));
-
                             xScale.domain(
                                 d3.extent(
                                    _.chain(newVal)
@@ -72,5 +77,5 @@
                 };
             }
         };
-    });
+    }]);
 })();

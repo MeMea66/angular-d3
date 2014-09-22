@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularD3App')
+angular.module('d3.chart.services')
     .service('parserService', ['$q', function($q) {
         this.convertToJson = function(file_location) {
             var defer = $q.defer();

@@ -1,7 +1,7 @@
 (function(){
     'use strict';
 
-    angular.module('d3.chart', [])
+    angular.module('d3.chart', ['d3.chart.services'])
         .directive('chart', function() {
             return {
                 templateNamespace: 'svg',
