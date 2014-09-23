@@ -16,7 +16,12 @@
                     margins: '='
                 },
                 controller: function($scope) {
-                    this.chartData = {};
+                    $scope.scale = {
+                        y: {},
+                        x: {}
+                    };
+                    $scope.data = {};
+                    $scope.fields = {};
 
                     this.getWidth = function() {
                         return $scope.width - $scope.margins.left - $scope.margins.right;
@@ -26,13 +31,25 @@
                         return $scope.height - $scope.margins.top - $scope.margins.bottom;
                     };
 
-                    this.setData = function(side, data) {
-                        this.chartData[side] = data;
+                    this.getData = function() {
+                        return $scope.data;
                     }
 
-                    this.getData = function() {
-                        return this.chartData;
+                    this.getScale = function() {
+                        return $scope.scale;
                     }
+
+                    this.getFields = function() {
+                        return $scope.fields;
+                    }
+
+                    $scope.$watch('scale', function(newVal, oldVal) {
+                        console.log(newVal);
+                    }, true);
+
+                    $scope.$watch('data', function(newVal, oldVal) {
+                        console.log(newVal);
+                    }, true);
                 },
             };
         });

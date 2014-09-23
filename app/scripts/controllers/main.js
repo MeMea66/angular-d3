@@ -8,7 +8,7 @@
  * Controller of the angularD3App
  */
 angular.module('angularD3App')
-    .controller('mainCtrl', ['$scope', 'parserService', function ($scope, parserService) {
+    .controller('mainCtrl', ['$scope', '$timeout', 'parserService', function ($scope, $timeout, parserService) {
         $scope.margins = {
             top: 50,
             left: 50,

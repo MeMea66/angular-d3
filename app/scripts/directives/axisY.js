@@ -22,14 +22,17 @@
             compile: function compile(tElement, tAttrs, transclude) {
                 return {
                     post: function postLink($scope, element, attrs, chart) {
-                        chart.setData($scope.side, $scope.data);
+                        $scope.chart = chart;
+                        $scope.chartData = chart.getData();
+                        $scope.chartData[attrs.side] = $scope.data;
 
-                        var yScale = d3.scale.linear();
                         var yAxis;
                         var axisEle = d3.select(element[0]);
 
-                        $scope.chart = chart;
                         attrs.side = $scope.side = attrs.side || 'left';
+
+                        $scope.yScale = chart.getScale()['y'][attrs.side] = d3.scale.linear();
+                        $scope.chartData[attrs.side] = $scope.data;
 
                         var axisSettings = _.compose.apply(null, _.chain(attrs)
                             .reduce(function(result, value, key) {
@@ -42,18 +45,22 @@
                             }, [])
                             .value());
 
-                        yScale.range([0, $scope.chart.getWidth()]);
-                        yAxis = axisSettings(d3.svg.axis().scale(yScale));
+                        $scope.yScale.range([0, $scope.chart.getHeight()]);
+                        yAxis = axisSettings(d3.svg.axis().scale($scope.yScale));
                         d3.select('.y.axis.' + $scope.side).call(yAxis);
 
-                        $scope.$watch('data', function(newVal, oldVal) {
-                            yScale.domain(
+                        $scope.$watch(function() {
+                            return [$scope.data, chart.getFields()[attrs.side]];
+                        }, function(newVal, oldVal) {
+                            $scope.chartData[attrs.side] = newVal[0];
+
+                            $scope.yScale.domain(
                                 d3.extent(
-                                   _.chain(newVal)
-                                   .values()
+                                   _.chain(newVal[1])
+                                       .map(function(val){
+                                           return _.pluck(newVal[0], val);
+                                       })
                                    .flatten(true)
-                                   .pluck($scope.field)
-                                   .map(function(val) {return new Date('2014-08-24T' + val)})
                                    .value())
                            );
 
